@@ -2,8 +2,8 @@ if [[ ! -d "$CACHE_DIR/clang-$CLANG_VERSION" ]]; then
   cd $CACHE_DIR
   puts-step "Installing clang-$CLANG_VERSION"
   mkdir -p "clang-$CLANG_VERSION"
-  curl http://llvm.org/releases/$CLANG_VERSION/clang+llvm-$CLANG_VERSION-x86_64-linux-gnu-ubuntu-14.04.tar.xz -s -L | xz -d -c | tar x -C clang-$CLANG_VERSION &> /dev/null
+  curl http://llvm.org/releases/$CLANG_VERSION/clang+llvm-$CLANG_VERSION-x86_64-linux-gnu-ubuntu-16.04.tar.xz -s -L | xz -d -c | tar x -C clang-$CLANG_VERSION &> /dev/null
   cd $BUILD_DIR
 fi
 
-export PATH="$CACHE_DIR/clang-$CLANG_VERSION/clang+llvm-$CLANG_VERSION-x86_64-linux-gnu-ubuntu-14.04/bin:$PATH"
+export PATH="$CACHE_DIR/clang-$CLANG_VERSION/clang+llvm-$CLANG_VERSION-x86_64-linux-gnu-ubuntu-16.04/bin:$PATH"
