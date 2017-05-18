@@ -18,7 +18,7 @@ $ heroku create --buildpack https://github.com/vapor/heroku-buildpack.git
 $ git push heroku master
 remote: -----> Swift app detected
 remote: -----> Installing Swift 3.1.1
-remote: -----> Installing clang-3.7.0
+remote: -----> Installing clang-4.0.0
 remote: -----> Building Package
 remote: -----> Copying binaries to 'bin'
 ```
