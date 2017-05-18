@@ -4,7 +4,7 @@ cd "$BUILD_DIR"
 echo "Swift 3 Heroku Installer";
 
 # Determine version
-VERSION="3.0.2"
+VERSION="3.1.1"
 if [ -f "$BUILD_DIR/.swift-version" ]
 then
     VERSION_FILE=".swift-version"
@@ -18,9 +18,9 @@ echo "🔢  Version: $VERSION";
 
 # Determine OS
 UBUNTU_RELEASE=`lsb_release -a 2>/dev/null`;
-if [[ $UBUNTU_RELEASE == *"15.10"* ]];
+if [[ $UBUNTU_RELEASE == *"16.04"* ]];
 then
-    OS="ubuntu1510";
+    OS="ubuntu1604";
 else
     OS="ubuntu1404";
 fi
