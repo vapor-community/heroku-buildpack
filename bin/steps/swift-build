@@ -1,4 +1,2 @@
-cd $BUILD_DIR
-
 puts-step "Building package"
 swift build $SWIFT_BUILD_FLAGS -c release

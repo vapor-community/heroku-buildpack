@@ -30,6 +30,8 @@ source "/etc/lsb-release"
 source "$BIN_DIR/utils"
 source "$BIN_DIR/steps/clang"
 source "$BIN_DIR/steps/swiftenv"
+
+cd $BUILD_DIR
 source "$BIN_DIR/steps/hooks/pre_compile"
 source "$BIN_DIR/steps/swift-build"
 source "$BIN_DIR/steps/swift-install"
