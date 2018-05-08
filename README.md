@@ -16,7 +16,7 @@ $ git push heroku master
 remote: -----> Swift app detected
 remote: -----> Installing clang 5.0.0
 remote: -----> Installing swiftenv
-remote: -----> Installing Swift 4.0
+remote: -----> Installing Swift 4.1.1
 remote: -----> Building package
 remote: -----> Installing dynamic libraries
 remote: -----> Installing binaries
@@ -56,7 +56,7 @@ in your repository:
 
 ```shell
 $ cat .swift-version
-4.1
+4.1.1
 ```
 
 The `.swift-version` file is completely compatible with
