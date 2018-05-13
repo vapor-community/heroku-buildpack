@@ -17,7 +17,7 @@ remote: -----> Swift app detected
 remote: -----> Installing clang 5.0.0
 remote: -----> Installing swiftenv
 remote: -----> Installing Swift 4.1.1
-remote: -----> Building package
+remote: -----> Building package (release configuration)
 remote: -----> Installing dynamic libraries
 remote: -----> Installing binaries
 ```
@@ -64,6 +64,19 @@ The `.swift-version` file is completely compatible with
 
 **NOTE**: *Since there are frequent Swift language changes, it's advised that
 you pin to your Swift version.*
+
+### Active build configuration
+
+By default, the buildpack will use the `release` build configuration to enable compiler optimizations. If you are experiencing mysterious crashes, you can try disabling them by setting the `SWIFT_BUILD_CONFIGURATION` to `debug`, then redeploying.
+
+```shell
+$ heroku config:set SWIFT_BUILD_CONFIGURATION=debug
+$ git commit -m "Change to debug configuration on Heroku" --allow-empty
+$ git push heroku master
+...
+remote: -----> Building package (debug configuration)
+...
+```
 
 ### Hooks
 
