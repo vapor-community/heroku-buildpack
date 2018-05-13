@@ -1,2 +1,2 @@
 puts-step "Building package"
-swift build $SWIFT_BUILD_FLAGS -c release
+swift build $SWIFT_BUILD_FLAGS -c $SWIFT_BUILD_CONFIGURATION
