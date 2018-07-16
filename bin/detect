@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # bin/detect <build-dir>
 
-if [[ -f $1/Package.swift ]]; then
+if [[ `find .  -iname "Package.swift"` ]]; then
   echo "Swift" && exit 0
 else
   echo "no" && exit 1
