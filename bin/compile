@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# bin/compile <build-dir> <cache-dir>
+# bin/compile <build-dir> <cache-dir> <env-dir>
 
 set -e
 set -o pipefail
@@ -22,6 +22,12 @@ if [ -f "$ENV_DIR/SWIFT_BUILD_CONFIGURATION" ]; then
 fi
 if [ -f "$ENV_DIR/SWIFT_BUILD_FLAGS" ]; then
   SWIFT_BUILD_FLAGS=`cat "$ENV_DIR/SWIFT_BUILD_FLAGS"`
+fi
+if [ -f "$ENV_DIR/PROJECT_PATH" ]; then
+  PROJECT_PATH=`cat "$ENV_DIR/PROJECT_PATH"`
+  mv -v $BUILD_DIR/$PROJECT_PATH/* .
+  rm -rfv $BUILD_DIR/$PROJECT_PATH
+  cd $BIN_DIR
 fi
 
 mkdir -p "$CACHE_DIR/$STACK"
