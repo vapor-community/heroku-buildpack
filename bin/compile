@@ -25,9 +25,8 @@ if [ -f "$ENV_DIR/SWIFT_BUILD_FLAGS" ]; then
 fi
 if [ -f "$ENV_DIR/PROJECT_PATH" ]; then
   PROJECT_PATH=`cat "$ENV_DIR/PROJECT_PATH"`
-  mv $BUILD_DIR/$PROJECT_PATH/* .
+  mv $BUILD_DIR/$PROJECT_PATH/* $BUILD_DIR/
   rm -rf $BUILD_DIR/$PROJECT_PATH
-  cd $BIN_DIR
 fi
 
 mkdir -p "$CACHE_DIR/$STACK"
