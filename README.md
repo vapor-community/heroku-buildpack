@@ -78,6 +78,11 @@ remote: -----> Building package (debug configuration)
 ...
 ```
 
+### Custom app folder
+
+By default, the buildpack will use the root project folder to detect and build you app.
+If you want to use a custom project folder set the `PROJECT_PATH` Config Var to the relative app folder.
+
 ### Hooks
 
 You can place custom scripts to be ran before and after compiling your Swift
