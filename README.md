@@ -93,5 +93,5 @@ This is useful if you would need to install any other dependencies.
 The `vapor/vapor` buildpack from the [Heroku Buildpack Registry](https://devcenter.heroku.com/articles/buildpack-registry) represents the latest stable version of the buildpack. If you'd like to use the source code from this Github repository, you can set your buildpack to the Github URL:
 
 ```sh-session
-$ $ heroku buildpacks:set https://github.com/vapor-community/heroku-buildpack.git
+$ heroku buildpacks:set https://github.com/vapor-community/heroku-buildpack.git
 ```
