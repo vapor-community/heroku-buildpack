@@ -1,5 +1,2 @@
-puts-step "Resolving dependencies"
-swift package --build-path "$SWIFT_BUILD_PATH" resolve
-
 puts-step "Building package ($SWIFT_BUILD_CONFIGURATION configuration)"
-swift build $SWIFT_BUILD_FLAGS -c "$SWIFT_BUILD_CONFIGURATION" --build-path "$SWIFT_BUILD_PATH"
+swift build $SWIFT_BUILD_FLAGS -c "$SWIFT_BUILD_CONFIGURATION"
