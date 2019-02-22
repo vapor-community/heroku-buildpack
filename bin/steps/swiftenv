@@ -1,14 +1,6 @@
 # Fetch swiftenv
 puts-step Installing swiftenv
 
-#make sure the git submodule update command is ran in the correct directory
-pushd "$ROOT_DIR" > /dev/null
-
-git submodule update --init --recursive >/dev/null
-
-#now move back to the previous directory
-popd > /dev/null
-
 # Activate swiftenv
 export SWIFTENV_ROOT="$CACHE_DIR/$STACK/swiftenv"
 export PATH="$ROOT_DIR/swiftenv/bin:$PATH"
