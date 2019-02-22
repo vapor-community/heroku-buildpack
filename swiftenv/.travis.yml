@@ -1,0 +1,12 @@
+os:
+- linux
+- osx
+
+language: generic
+osx_image: xcode9
+sudo: required
+dist: trusty
+
+script:
+- make test
+- make test-integration

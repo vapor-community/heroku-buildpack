@@ -1,0 +1,80 @@
+.TH SWIFTENV\-INSTALL 1
+
+.SH NAME
+swiftenv-install \- Install a version of Swift
+
+.SH SYNOPSIS
+swiftenv install [\-\-verbose] [\-\-list] [\-\-list-snapshots] [\-\-[no\-]build] [\-\-[no\-]set\-global] [\-\-[no\-]set\-local] [--no-clean] <version>
+
+.SH DESCRIPTION
+
+Installs a version of Swift.
+
+.SH OPTIONS
+
+\-\-verbose
+
+.RS
+Shows additional debugging information.
+.RE
+
+\-l/\-\-list
+
+.RS
+Lists all the Swift releases that can be installed.
+.RE
+
+\-\-list-snapshots
+
+.RS
+Lists all the Swift snapshot releases that can be installed.
+.RE
+
+\-\-build
+
+.RS
+Forces installation only from source.
+.RE
+
+\-\-no\-build
+
+.RS
+Forces installation only from binary releases of Swift.
+.RE
+
+\-\-no\-clean
+
+.RS
+Leaves the build directory intact for inspection and debugging.
+.RE
+
+\-\-verify\
+
+.RS
+When downloading a pre-packaged tarball, also downloads the corresponding signature and verifies it with gpg. Assumes the keys already exist on the public gpg keyring. If verification fails, the version will not be installed. Signatures are only published for Linux tarballs, and not macOS packages.
+.RE
+
+\-\-set\-global
+
+.RS
+Set the installed version globally.
+.RE
+
+\-\-no\-set\-global
+
+.RS
+Don't set the installed version globally.
+.RE
+
+\-\-set\-local
+
+.RS
+Set the installed version in the local .swift-version file.
+.RE
+
+
+\-\-no\-set\-local
+
+.RS
+Don't set the installed version locally.
+.RE

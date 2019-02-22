@@ -1,0 +1,72 @@
+#!/usr/bin/env bash
+# Usage: swiftenv [--version] <command>
+
+set -e
+
+if [ -z "$SWIFTENV_ROOT" ]; then
+  SWIFTENV_ROOT=$HOME/.swiftenv
+fi
+if [ ! -d "$SWIFTENV_ROOT" ]; then
+  mkdir "$SWIFTENV_ROOT"
+fi
+export SWIFTENV_ROOT
+
+find_source_path() {
+  cd "$(dirname "${BASH_SOURCE[0]}")"
+  cd "$(dirname "$(readlink "${BASH_SOURCE[0]}")")"
+  echo "$PWD/.."
+}
+
+export SWIFTENV_SOURCE_PATH="$(find_source_path)"
+export PATH="$SWIFTENV_SOURCE_PATH/libexec:$PATH"
+
+show_help=false
+
+for arg in "$@"; do
+  case "$arg" in
+  -h | --help )
+    show_help=true
+    ;;
+
+  -* )
+    # Ignore options and flags
+    ;;
+
+  * )
+    if [ -z "$command" ]; then
+      command=$arg
+    fi
+    ;;
+  esac
+done
+
+if [ -z "$SWIFTENV_SHIM" ]; then
+  if $show_help; then
+    swiftenv-help "$command"
+    exit
+  fi
+fi
+
+command="$1"
+case "$command" in
+"" )
+  swiftenv-help
+  exit 1
+  ;;
+
+-v | --version )
+  exec swiftenv---version
+  exit
+  ;;
+
+* )
+  command_path="$(command -v "swiftenv-$command" || true)"
+  if ! [ -n "$command_path" ]; then
+    echo "no such command \`$command'"
+    exit 1
+  fi
+
+  shift 1
+  exec "$command_path" "$@"
+  ;;
+esac

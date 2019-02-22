@@ -1,0 +1,76 @@
+#!/usr/bin/env bash
+# Usage: swiftenv uninstall <version>
+# Summary: Uninstalls a Swift version
+# completes
+
+set -e
+
+if [ "$1" = "--complete" ]; then
+  exec swiftenv-versions --bare
+fi
+
+VERSION=$1
+if [ -z "$VERSION" ] ; then
+  echo "Usage: swiftenv uninstall <version>"
+  exit 1
+fi
+
+if [ "$VERSION" == "system" ]; then
+  echo "$VERSION is uninstallable."
+  exit 1
+fi
+
+if [ -d "$SWIFTENV_ROOT/versions/$VERSION" ]; then
+  VERSION_DIRECTORY="$SWIFTENV_ROOT/versions/$VERSION"
+elif [ -d "$SWIFTENV_ROOT/versions/swift-$VERSION" ]; then
+  VERSION_DIRECTORY="$SWIFTENV_ROOT/versions/swift-$VERSION"
+elif [ -d "/Library/Developer/Toolchains/swift-$VERSION.xctoolchain" ]; then
+  VERSION_DIRECTORY="/Library/Developer/Toolchains/swift-$VERSION.xctoolchain"
+elif [ -d "$HOME/Library/Developer/Toolchains/swift-$VERSION.xctoolchain" ]; then
+  VERSION_DIRECTORY="$HOME/Library/Developer/Toolchains/swift-$VERSION.xctoolchain"
+elif [ -d "/Library/Developer/Toolchains/swift-$VERSION-RELEASE.xctoolchain" ]; then
+  VERSION_DIRECTORY="/Library/Developer/Toolchains/swift-$VERSION-RELEASE.xctoolchain"
+elif [ -d "$HOME/Library/Developer/Toolchains/swift-$VERSION-RELEASE.xctoolchain" ]; then
+  VERSION_DIRECTORY="$HOME/Library/Developer/Toolchains/swift-$VERSION-RELEASE.xctoolchain"
+else
+
+  # Xcode installs
+  if command -v "mdfind" >/dev/null 2>&1; then
+    XCODES="$(mdfind "kMDItemCFBundleIdentifier == 'com.apple.dt.Xcode'" 2>/dev/null)"
+    for xcode in $XCODES; do
+      if [ -d "$xcode" ]; then
+        version_line="$(env DEVELOPER_DIR="$xcode" xcrun swift --version | head -n1)"
+        xversion="$(echo "$version_line" | cut -d " " -f 4)"
+        if [ "$xversion" == "$VERSION" ]; then
+          echo "Cannot uninstall $VERSION from swiftenv."
+          echo "You can uninstall $VERSION by uninstalling Xcode ($xcode)."
+          exit 1
+        fi
+      fi
+    done
+  fi
+
+  echo "$VERSION is not installed."
+  exit 1
+fi
+
+
+if [ -r "$SWIFTENV_ROOT/version" ]; then
+  CURRENT_VERSION=$(cat "$SWIFTENV_ROOT/version")
+
+  if [ "$VERSION" == "$CURRENT_VERSION" ]; then
+    rm -f "$SWIFTENV_ROOT/version"
+  fi
+fi
+
+if [[ "$VERSION_DIRECTORY" == "/Library/Developer/Toolchains/"* ]]; then
+  if [ "$(readlink /Library/Developer/Toolchains/swift-latest.xctoolchain)" == "$VERSION_DIRECTORY" ]; then
+    sudo rm -fr /Library/Developer/Toolchains/swift-latest.xctoolchain
+  fi
+
+  sudo rm -fr "$VERSION_DIRECTORY"
+else
+  rm -fr "$VERSION_DIRECTORY"
+fi
+
+swiftenv rehash

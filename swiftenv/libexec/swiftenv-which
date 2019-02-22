@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+# Usage: swiftenv which <command>
+
+set -e
+
+SHIM=false
+if [ "$1" = "--shim" ]; then
+  SHIM=true
+  shift
+fi
+
+COMMAND=$1
+
+if [ -z "$COMMAND" ] ; then
+  swiftenv-help --usage which
+  exit 1
+fi
+
+VERSION="$(swiftenv-version-name)"
+if [ "$VERSION" == "system" ]; then
+  env PATH=/usr/bin:/bin which $COMMAND
+  exit
+elif swiftenv-prefix "$VERSION" >/dev/null; then
+  COMMAND_PATH="$(swiftenv-prefix)/usr/bin"
+else
+  >&2 echo "swiftenv: version \`$VERSION' (set by $(swiftenv-version-origin)) is not installed"
+  exit 1
+fi
+
+if [ -x "$COMMAND_PATH/$COMMAND" ]; then
+  echo "$COMMAND_PATH/$COMMAND"
+else
+  if $SHIM; then
+    env PATH=/usr/bin:/bin which $COMMAND
+  else
+    exit 127
+  fi
+fi

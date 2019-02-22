@@ -1,0 +1,90 @@
+#!/usr/bin/env bash
+# Usage: Rehash swiftenv shims
+
+set -e
+
+SHIM_PATH=$SWIFTENV_ROOT/shims
+
+mkdir -p "$SHIM_PATH"
+
+list_executable_names_toolchains() {
+  TOOLCHAINS_DIR="$1"
+
+  if [ -d "$TOOLCHAINS_DIR" ]; then
+    for path in "$TOOLCHAINS_DIR"/*.xctoolchain; do
+      if [ -d "$path" ]; then
+        for file in "$path/usr/bin/"*; do
+          echo "${file##*/}"
+        done
+      fi
+    done
+  fi
+}
+
+list_executable_names_xcodes() {
+  if command -v "mdfind" >/dev/null 2>&1; then
+    XCODES="$(mdfind "kMDItemCFBundleIdentifier == 'com.apple.dt.Xcode'" 2>/dev/null)"
+    for xcode in $XCODES; do
+      TOOLCHAIN_DIR="$xcode/Contents/Developer/Toolchains/XcodeDefault.xctoolchain"
+      if [ -d "$TOOLCHAIN_DIR" ]; then
+        for file in "$TOOLCHAIN_DIR/usr/bin/"*; do
+          executable="${file##*/}"
+          if [[ "$executable" == "swift"* ]] || [[ "$executable" == "lldb"* ]]; then
+            echo "$executable"
+          fi
+        done
+      fi
+    done
+  fi
+}
+
+# List all basenames of executables for every installed Swift version
+list_executable_names() {
+  VERSIONS_DIR="$SWIFTENV_ROOT/versions/$version"
+
+  for path in "$VERSIONS_DIR"/*; do
+    if [ -d "$path/usr/bin" ]; then
+      for file in "$path/usr/bin"/*; do
+        echo "${file##*/}"
+      done
+    fi
+  done
+
+  # OS X Swift Toolchains
+  list_executable_names_toolchains "/Library/Developer/Toolchains"
+  list_executable_names_toolchains "$HOME/Library/Developer/Toolchains"
+
+  # Xcode installs
+  list_executable_names_xcodes
+}
+
+remove_stale_shims() {
+  local shim
+  for shim in "$SHIM_PATH"/*; do
+    if [[ "$registered_shims" != *" ${shim##*/} "* ]]; then
+      rm -f "$shim"
+    fi
+  done
+}
+
+create_shims() {
+  local shim
+  for shim in $registered_shims; do
+    create_shim "$shim"
+  done
+}
+
+create_shim() {
+  cat > "$SHIM_PATH/$1" <<SH
+#!/usr/bin/env bash
+set -e
+export SWIFTENV_SHIM=true
+exec "$(command -v swiftenv)" exec "--shim" "$1" "\$@"
+SH
+  chmod +x "$SHIM_PATH/$1"
+}
+
+registered_shims=" $(list_executable_names | sort -u) "
+remove_stale_shims
+create_shims
+swiftenv --version > "$SHIM_PATH/.version"
