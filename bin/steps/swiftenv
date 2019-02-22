@@ -1,7 +1,6 @@
-# Fetch swiftenv
+# Activate swiftenv
 puts-step Installing swiftenv
 
-# Activate swiftenv
 export SWIFTENV_ROOT="$CACHE_DIR/$STACK/swiftenv"
 export PATH="$ROOT_DIR/swiftenv/bin:$PATH"
 eval "$(swiftenv init -)"
