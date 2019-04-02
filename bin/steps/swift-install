@@ -1,13 +1,15 @@
+DYNAMIC_LIBRARY_REGEX=".*\.so\(\.[0-9]+\)*\'"
+
 puts-step "Installing dynamic libraries"
 mkdir -p $BUILD_DIR/.swift-lib
 SWIFT_PREFIX="$(swiftenv prefix)"
-cp $SWIFT_PREFIX/usr/lib/swift/linux/*.so $BUILD_DIR/.swift-lib
-find -L .build/$SWIFT_BUILD_CONFIGURATION -name '*.so' -type f -exec cp {} $BUILD_DIR/.swift-lib \; || true 2>/dev/null
+find -L $SWIFT_PREFIX/usr/lib/swift/linux -regex "$DYNAMIC_LIBRARY_REGEX" -type f -exec cp -a {} $BUILD_DIR/.swift-lib \; || true 2>/dev/null
+find -L .build/$SWIFT_BUILD_CONFIGURATION -regex "$DYNAMIC_LIBRARY_REGEX" -type f -exec cp -a {} $BUILD_DIR/.swift-lib \; || true 2>/dev/null
 cp -a /usr/lib/x86_64-linux-gnu/libatomic* $BUILD_DIR/.swift-lib
 
 puts-step "Installing binaries"
 mkdir -p $BUILD_DIR/.swift-bin
-find -L .build/$SWIFT_BUILD_CONFIGURATION ! -name '*.so' -type f -perm /a+x -exec cp {} $BUILD_DIR/.swift-bin \; || true 2>/dev/null
+find -L .build/$SWIFT_BUILD_CONFIGURATION ! -regex "$DYNAMIC_LIBRARY_REGEX" -type f -perm /a+x -exec cp -a {} $BUILD_DIR/.swift-bin \; || true 2>/dev/null
 
 puts-step "Cleaning up after build"
 rm -rf .build
