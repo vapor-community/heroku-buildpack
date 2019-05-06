@@ -16,7 +16,7 @@ $ git push heroku master
 remote: -----> Swift app detected
 remote: -----> Installing clang 5.0.0
 remote: -----> Installing swiftenv
-remote: -----> Installing Swift 4.2.2
+remote: -----> Installing Swift 4.2.4
 remote: -----> Building package (release configuration)
 remote: -----> Installing dynamic libraries
 remote: -----> Installing binaries
@@ -43,7 +43,7 @@ Example Procfile for Vapor 2 apps:
 web: Run --env=production --port=$PORT
 ```
 
-Example Procfile for Vapor 3 apps (Swift 4.1 or higher required):
+Example Procfile for Vapor 3 apps:
 
 ```
 web: Run serve --env production --hostname 0.0.0.0 --port $PORT
@@ -51,12 +51,10 @@ web: Run serve --env production --hostname 0.0.0.0 --port $PORT
 
 ### Specify a Swift version
 
-You can also customise the version of Swift used with a `.swift-version` file
-in your repository:
+The buildpack defaults to Swift 4.2.4 to maintain compatibility with Swift 3 projects. If you want to use the latest and greatest, or need a specific version – including snapshots, create a file called `.swift-version` in the root of the project folder with the desired version number inside. 
 
 ```shell
-$ cat .swift-version
-4.2.2
+$ echo '5.0.1' > .swift-version
 ```
 
 The `.swift-version` file is completely compatible with
