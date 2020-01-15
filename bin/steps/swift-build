@@ -1,2 +1,2 @@
 puts-step "Building package ($SWIFT_BUILD_CONFIGURATION configuration)"
-swift build $SWIFT_BUILD_FLAGS -c "$SWIFT_BUILD_CONFIGURATION"
+swift build $SWIFT_BUILD_FLAGS -c "$SWIFT_BUILD_CONFIGURATION" -Xswiftc -g --enable-test-discovery
