@@ -11,9 +11,8 @@ BUILD_DIR=$1
 CACHE_DIR=$2
 ENV_DIR=$3
 
-DEFAULT_SWIFT_VERSION="4.2.4"
+DEFAULT_SWIFT_VERSION="5.1.3"
 
-CLANG_VERSION=7.0.1
 SWIFT_BUILD_CONFIGURATION="release"
 SWIFT_BUILD_FLAGS=""
 
@@ -28,7 +27,6 @@ mkdir -p "$CACHE_DIR/$STACK"
 
 source "/etc/lsb-release"
 source "$BIN_DIR/utils"
-source "$BIN_DIR/steps/clang"
 source "$BIN_DIR/steps/swiftenv"
 
 cd $BUILD_DIR
