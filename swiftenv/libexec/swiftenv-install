@@ -221,7 +221,6 @@ get_version_list() {
 
   if ([ "$build" == "false" ]); then
     VERSIONS="$(ls "$SWIFTENV_SOURCE_PATH/share/swiftenv-install" | grep -v json | sort_versions | uniq)"
-    PLATFORM="$(get_platform)"
 
     for version in $VERSIONS; do
       URL=""
@@ -358,6 +357,7 @@ if [[ "$VERSION" == "https://"* ]]; then
 fi
 
 VERSION="${VERSION##swift-}"
+PLATFORM="$(get_platform)"
 
 check_installed "$VERSION"
 
