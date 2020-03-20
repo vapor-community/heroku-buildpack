@@ -141,7 +141,11 @@ install_pkg_binary() {
 
   download "$URL" "$PKG"
 
-  sudo installer -pkg "$PKG" -target /
+  if $user; then
+    installer -pkg "$PKG" -target CurrentUserHomeDirectory
+  else
+    sudo installer -pkg "$PKG" -target LocalSystem
+  fi
 
   if $clean; then
     rm -fr "$PKG"
@@ -243,6 +247,11 @@ verify=false
 set_global=auto
 set_local=false
 completes=false
+user=true
+
+if [ "$(uname)" == "Darwin" ]; then
+  user=false
+fi
 
 if [ -n "$SWIFTENV_VERIFY" ] && [ "$SWIFTENV_VERIFY" != "false" ]; then
   verify=true
@@ -284,6 +293,10 @@ for args in "$@"; do
     set_global=true
   elif [ "$args" = "--set-local" ]; then
     set_local=true
+  elif [ "$args" = "--user" ]; then
+    user=true
+  elif [ "$args" = "--no-user" ]; then
+    user=false
   else
     VERSION="$args"
   fi
@@ -310,6 +323,8 @@ if $completes; then
   echo "--no-set-global"
   echo "--set-local"
   echo "--no-set-local"
+  echo "--user"
+  echo "--no-user"
   get_version_list
   exit
 fi
@@ -345,6 +360,13 @@ fi
 VERSION="${VERSION##swift-}"
 
 check_installed "$VERSION"
+
+if ! $user; then
+  if [ "$(uname)" != "Darwin" ]; then
+    echo "--no-user installation is only supported on macOS."
+    exit 1
+  fi
+fi
 
 # Install Binary
 if ([ "$build" == "auto" ] || [ "$build" == "false" ]); then
