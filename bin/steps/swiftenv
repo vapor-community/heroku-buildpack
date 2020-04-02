@@ -5,12 +5,6 @@ export SWIFTENV_ROOT="$CACHE_DIR/$STACK/swiftenv"
 export PATH="$ROOT_DIR/swiftenv/bin:$PATH"
 eval "$(swiftenv init -)"
 
-if [ -f "$BUILD_DIR/.swift-version" ]; then
-    export SWIFT_VERSION=`cat $BUILD_DIR/.swift-version | tr -d '[[:space:]]'`
-else 
-    export SWIFT_VERSION="$DEFAULT_SWIFT_VERSION"
-fi
-
 # Install Swift
 puts-step Installing Swift $SWIFT_VERSION
 swiftenv install $SWIFT_VERSION -s
