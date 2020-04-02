@@ -18,6 +18,9 @@ SWIFT_VERSION="5.2.1"
 SWIFT_BUILD_CONFIGURATION="release"
 SWIFT_BUILD_FLAGS=""
 
+source "/etc/lsb-release"
+source "$BIN_DIR/utils"
+
 if [ -f "$BUILD_DIR/.swift-version" ]; then
   SWIFT_VERSION=`cat $BUILD_DIR/.swift-version | tr -d '[[:space:]]'`
   puts-step "Using Swift $SWIFT_VERSION (from .swift-version file)"
@@ -38,9 +41,6 @@ fi
 
 
 mkdir -p "$CACHE_DIR/$STACK"
-
-source "/etc/lsb-release"
-source "$BIN_DIR/utils"
 
 if [[ $SWIFT_VERSION = 5* ]]; then
   puts-step "Using built-in clang (Swift $SWIFT_VERSION)"
