@@ -3,6 +3,13 @@ case "$PLATFORM" in
     URL="https://swift.org/builds/swift-5.2-branch/xcode/swift-5.2-DEVELOPMENT-SNAPSHOT-2020-03-23-a/swift-5.2-DEVELOPMENT-SNAPSHOT-2020-03-23-a-osx.pkg"
     ;;
 
+  'ubuntu14.04' )
+    echo "Swift 5.2 does not support Ubuntu 14.04."
+    echo "Please upgrade your stack using the 'heroku stack:set' command or via the dashboard."
+    echo "If that is not an option, pin an older version of Swift."
+    exit 1
+    ;;
+
   'ubuntu16.04' )
     URL="https://swift.org/builds/swift-5.2-branch/ubuntu1604/swift-5.2-DEVELOPMENT-SNAPSHOT-2020-03-23-a/swift-5.2-DEVELOPMENT-SNAPSHOT-2020-03-23-a-ubuntu16.04.tar.gz"
     ;;
