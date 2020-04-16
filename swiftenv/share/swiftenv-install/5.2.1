@@ -4,9 +4,11 @@ case "$PLATFORM" in
     ;;
 
   'ubuntu14.04' )
-    echo "Swift 5.2 does not support Ubuntu 14.04."
-    echo "Please upgrade your stack using the 'heroku stack:set' command or via the dashboard."
-    echo "If that is not an option, pin an older version of Swift."
+    echo
+    echo " !     Swift 5.2 does not support Ubuntu 14.04."
+    echo " !     Please upgrade your stack using the 'heroku stack:set' command or via the dashboard."
+    echo " !     If that is not an option, pin an older version of Swift."
+    echo
     exit 1
     ;;
 
