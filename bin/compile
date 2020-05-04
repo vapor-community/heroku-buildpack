@@ -53,7 +53,9 @@ cd $BUILD_DIR
 source "$BIN_DIR/steps/hooks/pre_compile"
 source "$BIN_DIR/steps/ssh"
 source "$BIN_DIR/steps/swift-build"
-source "$BIN_DIR/steps/swift-install"
+if [[ -z "$RUN_TESTS" ]]; then
+  source "$BIN_DIR/steps/swift-install"
+fi
 
 # Setup application environment
 mkdir -p $BUILD_DIR/.profile.d
