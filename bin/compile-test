@@ -1,8 +1,0 @@
-#!/usr/bin/env bash
-# bin/compile <build-dir> <cache-dir>
-
-BIN_DIR=$(cd $(dirname $0); pwd)
-
-source "$BIN_DIR/compile"
-
-swift run Run migrate

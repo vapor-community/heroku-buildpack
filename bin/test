@@ -1,2 +1,14 @@
 #!/usr/bin/env bash
-cd "$1" && swift test
+# bin/compile-test <build-dir> <cache-dir>
+
+BIN_DIR=$(cd $(dirname $0); pwd)
+
+source "$BIN_DIR/compile"
+
+puts-step "Migrating the database"
+
+swift run Run migrate
+
+puts-step "Running test suite"
+
+swift test

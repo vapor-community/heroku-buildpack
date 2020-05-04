@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+# bin/test-compile <build-dir> <cache-dir>
