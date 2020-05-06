@@ -7,10 +7,10 @@ set -o pipefail
 RUN_TESTS=1
 BIN_DIR=$(cd $(dirname $0); pwd)
 
+source "$BIN_DIR/compile"
+
 cd $BUILD_DIR
 source "$BIN_DIR/steps/hooks/pre_test"
-
-source "$BIN_DIR/compile"
 
 puts-step "Running test suite"
 swift test
