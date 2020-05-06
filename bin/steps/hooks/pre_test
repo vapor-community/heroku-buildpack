@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-if [ -f bin/pre_test]; then
+if [ -f bin/pre_test ]; then
   echo "-----> Running pre-test hook"
   source ./bin/pre_test
 fi
