@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+if [ -f bin/post_test]; then
+  echo "-----> Running post-test hook"
+  source ./bin/post_test
+fi
