@@ -14,10 +14,10 @@ $ heroku create --buildpack vapor/vapor
 
 $ git push heroku master
 remote: -----> Swift app detected
-remote: -----> Using Swift 5.2.1 (default)
-remote: -----> Using built-in clang (Swift 5.2.1)
+remote: -----> Using Swift 5.2.5 (default)
+remote: -----> Using built-in clang (Swift 5.2.5)
 remote: -----> Installing swiftenv
-remote: -----> Installing Swift 5.2.1
+remote: -----> Installing Swift 5.2.5
 ...
 ```
 
@@ -50,7 +50,7 @@ web: Run --env=production --port=$PORT
 
 ### Specify a Swift version
 
-The buildpack defaults to Swift 5.2.4 which will be swiftly updated when new Swift versions are released.
+The buildpack defaults to Swift 5.2.5 which will be swiftly updated when new Swift versions are released.
 
 If you need to use a specific version of the Swift toolchain, including older versions – for example Swift 4.2.x to retain compatibility with Swift 3 projects, you can pin that version number using a file called `.swift-version` in the root of the project folder, or by setting a `SWIFT_VERSION` configuration variable on Heroku, then deploying again. 
 
@@ -86,19 +86,32 @@ remote: -----> Building package (debug configuration)
 
 ### Other build arguments
 
-If you want to pass in extra flags to `swift build`, you can do so using the `SWIFT_BUILD_FLAGS` config variable.
+If you want to pass extra flags to the `swift build` command, you can do so by setting the `SWIFT_BUILD_FLAGS` config variable. The most common use of this feature is to enable _test discovery_. 
 
-For example, the excellent [swift-backtrace](https://github.com/swift-server/swift-backtrace) library needs debug symbols, which can be enabled by passing `-Xswiftc -g` to the build command. Or, if you want to leverage test discovery instead of generating/writing Linux test manifests, the `--enable-test-discovery` flag is really useful.
+#### Test discovery
 
-The following example shows how to set both:
+At the time of writing, while the buildpack does not run tests, having a test manifest or enabling test discovery is mandatory if your project has a test target.
+
+Without either of those, your deployment will fail with an obscure error, such as:
+
+    remote: error: missing LinuxMain.swift file in the Tests directory
+    remote:  !     Push rejected, failed to compile Swift app.
+    remote: 
+    remote:  !     Push failed
+
+> This is painfully common with the Vapor 4 template projects.
+
+The easy and low-maintenance solution is passing the `--enable-test-discovery` build flag via Heroku configuration and attempting to deploy again.
+
+The following example demonstrates this:
 
 ```shell
-$ heroku config:set SWIFT_BUILD_FLAGS="--enable-test-discovery -Xswiftc -g"
-$ git commit -m "Enable test discovery and debug symbols on Heroku" --allow-empty
+$ heroku config:set SWIFT_BUILD_FLAGS="--enable-test-discovery"
+$ git commit -m "Enable test discovery on Heroku" --allow-empty
 $ git push heroku master
 ```
 
-Note: while the buildpack does not run tests, having a test manifest or enabling test discovery is mandatory at the time of writing.
+> Note that the empty commit is only required if uncommitted files and the previous deployment was successful.
 
 ### Hooks
 
