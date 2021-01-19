@@ -1,0 +1,29 @@
+case "$PLATFORM" in
+  'osx' )
+    URL="https://swift.org/builds/swift-5.3.1-release/xcode/swift-5.3.1-RELEASE/swift-5.3.1-RELEASE-osx.pkg"
+    ;;
+
+  'ubuntu14.04' )
+    echo
+    echo " !     Swift 5.3.1 does not support Ubuntu 14.04."
+    echo " !     Please upgrade your stack using the 'heroku stack:set' command or via the dashboard."
+    echo " !     If that is not an option, pin an older version of Swift."
+    echo
+    exit 1
+    ;;
+
+  'ubuntu16.04' )
+    URL="https://swift.org/builds/swift-5.3.1-release/ubuntu1604/swift-5.3.1-RELEASE/swift-5.3.1-RELEASE-ubuntu16.04.tar.gz"
+    ;;
+
+  'ubuntu18.04' )
+    URL="https://swift.org/builds/swift-5.3.1-release/ubuntu1804/swift-5.3.1-RELEASE/swift-5.3.1-RELEASE-ubuntu18.04.tar.gz"
+    ;;
+
+  'ubuntu20.04' )
+    URL="https://swift.org/builds/swift-5.3.1-release/ubuntu2004/swift-5.3.1-RELEASE/swift-5.3.1-RELEASE-ubuntu20.04.tar.gz"
+    ;;
+
+  * )
+    ;;
+esac
