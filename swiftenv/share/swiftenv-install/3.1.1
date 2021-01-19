@@ -15,6 +15,14 @@ case "$PLATFORM" in
     URL="https://swift.org/builds/swift-3.1.1-release/ubuntu1610/swift-3.1.1-RELEASE/swift-3.1.1-RELEASE-ubuntu16.10.tar.gz"
     ;;
 
+  'ubuntu18.04' | 'ubuntu20.04')
+    echo
+    echo " !     Swift 3.1.1 does not support Ubuntu 18.04, nor any later versions of the Heroku stack."
+    echo " !     Please update your project to a more recent version of Swift."
+    echo
+    exit 1
+    ;;
+
   * )
     ;;
 esac
