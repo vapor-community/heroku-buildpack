@@ -12,7 +12,7 @@ mkdir -p $BUILD_DIR/.swift-bin
 find -L .build/$SWIFT_BUILD_CONFIGURATION ! -regex "$DYNAMIC_LIBRARY_REGEX" -type f -perm /a+x -exec cp -a {} $BUILD_DIR/.swift-bin \; || true 2>/dev/null
 
 puts-step "Installing resources"
-find -L .build/$SWIFT_BUILD_CONFIGURATION/* -regex '.*\.bundle$' -exec cp -a {} $BUILD_DIR/.swift-bin \; || true 2>/dev/null
+find -L .build/$SWIFT_BUILD_CONFIGURATION/* -regex '.*\.resources$' -exec cp -a {} $BUILD_DIR/.swift-bin \; || true 2>/dev/null
 
 puts-step "Cleaning up after build"
 rm -rf .build
