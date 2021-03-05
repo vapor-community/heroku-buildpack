@@ -14,10 +14,10 @@ $ heroku create --buildpack vapor/vapor
 
 $ git push heroku master
 remote: -----> Swift app detected
-remote: -----> Using Swift 5.3.2 (default)
-remote: -----> Using built-in clang (Swift 5.3.2)
+remote: -----> Using Swift 5.3.3 (default)
+remote: -----> Using built-in clang (Swift 5.3.3)
 remote: -----> Installing swiftenv
-remote: -----> Installing Swift 5.3.2
+remote: -----> Installing Swift 5.3.3
 ...
 ```
 
@@ -50,7 +50,7 @@ web: Run --env=production --port=$PORT
 
 ### Specify a Swift version
 
-The buildpack defaults to Swift 5.3.2 which will be swiftly updated when new Swift versions are released.
+The buildpack defaults to Swift 5.3.3 which will be updated when new Swift versions are released.
 
 If you need to use a specific version of the Swift toolchain, including older versions – for example Swift 4.2.x to retain compatibility with Swift 3 projects, you can pin that version number using a file called `.swift-version` in the root of the project folder, or by setting a `SWIFT_VERSION` configuration variable on Heroku, then deploying again. 
 
