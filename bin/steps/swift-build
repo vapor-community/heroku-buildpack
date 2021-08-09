@@ -1,2 +1,7 @@
-puts-step "Building package ($SWIFT_BUILD_CONFIGURATION configuration)"
-swift build $SWIFT_BUILD_FLAGS -c "$SWIFT_BUILD_CONFIGURATION" --cache-path $CACHE_DIR/spm
+if [ "5.4 $SWIFT_VERSION" == "$(sort --version-sort <<< "5.4 $SWIFT_VERSION")" ]; then
+  puts-step "Building package ($SWIFT_BUILD_CONFIGURATION configuration) – cache enabled"
+  swift build $SWIFT_BUILD_FLAGS -c "$SWIFT_BUILD_CONFIGURATION" --cache-path $CACHE_DIR/spm
+else
+  puts-step "Building package ($SWIFT_BUILD_CONFIGURATION configuration)"
+  swift build $SWIFT_BUILD_FLAGS -c "$SWIFT_BUILD_CONFIGURATION"
+fi
