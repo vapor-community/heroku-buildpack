@@ -38,6 +38,9 @@ if [ -f "$ENV_DIR/SWIFT_BUILD_FLAGS" ]; then
   SWIFT_BUILD_FLAGS=`cat "$ENV_DIR/SWIFT_BUILD_FLAGS"`
 fi
 
+if [ -f "$ENV_DIR/ENABLE_SPM_CACHE" ]; then
+  SWIFT_BUILD_FLAGS="$SWIFT_BUILD_FLAGS --cache-path $CACHE_DIR/spm"
+fi
 
 mkdir -p "$CACHE_DIR/$STACK"
 
