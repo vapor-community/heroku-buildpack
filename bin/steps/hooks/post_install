@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+if [ -f bin/post_install ]; then
+  echo "-----> Running post-install hook"
+  chmod +x bin/post_install
+  ./bin/post_install
+fi
