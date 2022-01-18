@@ -53,6 +53,7 @@ cd $BUILD_DIR
 source "$BIN_DIR/steps/hooks/pre_compile" "$BUILD_DIR" "$CACHE_DIR" "$ENV_DIR"
 source "$BIN_DIR/steps/ssh"
 source "$BIN_DIR/steps/swift-build"
+source "$BIN_DIR/steps/hooks/post_compile" "$BUILD_DIR" "$CACHE_DIR" "$ENV_DIR"
 if [[ -z "$RUN_TESTS" ]]; then
   source "$BIN_DIR/steps/swift-install"
 fi
