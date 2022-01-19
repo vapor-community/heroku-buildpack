@@ -114,11 +114,13 @@ $ git push heroku master
 
 ### Hooks
 
-You can place custom scripts to be run before and after compiling your Swift
+You can place custom scripts to be run before and after compiling and installing your Swift
 source code inside the following files in your repository:
 
 - `bin/pre_compile`
 - `bin/post_compile`
+- `bin/pre_install`
+- `bin/post_install`
 
 This is useful if you need to customize the final image.
 
