@@ -11,7 +11,7 @@ case "$PLATFORM" in
     URL="https://swift.org/builds/swift-3.0-release/ubuntu1510/swift-3.0-RELEASE/swift-3.0-RELEASE-ubuntu15.10.tar.gz"
     ;;
 
-  'ubuntu16.04' | 'ubuntu18.04' | 'ubuntu20.04')
+  'ubuntu16.04' | 'ubuntu18.04' | 'ubuntu20.04' | 'ubuntu22.04' )
     echo
     echo " !     Swift 3.0 does not support Ubuntu 16.04, nor any later versions of the Heroku stack."
     echo " !     Please update your project to a more recent version of Swift."

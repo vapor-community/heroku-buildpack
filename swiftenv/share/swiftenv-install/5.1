@@ -15,9 +15,9 @@ case "$PLATFORM" in
     URL="https://swift.org/builds/swift-5.1-release/ubuntu1804/swift-5.1-RELEASE/swift-5.1-RELEASE-ubuntu18.04.tar.gz"
     ;;
 
-  'ubuntu20.04')
+  'ubuntu20.04' | 'ubuntu22.04' )
     echo
-    echo " !     Swift 5.1 does not support Ubuntu 20.04."
+    echo " !     Swift 5.1 does not support Ubuntu 20.04, nor any later versions of the Heroku stack."
     echo " !     Please update your project to a more recent version of Swift."
     echo " !"
     echo " !     You can also downgrade your stack for the time being (not recommended),"
