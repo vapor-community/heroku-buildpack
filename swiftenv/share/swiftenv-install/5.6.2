@@ -13,7 +13,12 @@ case "$PLATFORM" in
     ;;
 
   'ubuntu16.04' )
-    URL="https://swift.org/builds/swift-5.6.2-release/ubuntu1604/swift-5.6.2-RELEASE/swift-5.6.2-RELEASE-ubuntu16.04.tar.gz"
+    echo
+    echo " !     Swift 5.6.2 does not support Ubuntu 16.04."
+    echo " !     Please upgrade your stack using the 'heroku stack:set' command or via the dashboard."
+    echo " !     If that is not an option, pin an older version of Swift."
+    echo
+    exit 1
     ;;
 
   'ubuntu18.04' )
