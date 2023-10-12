@@ -22,17 +22,16 @@ VAR_PATH="$ENV_DIR/PACKAGE_DIR"
 if [[ -f "$VAR_PATH" ]]; then
   package=$(cat "$VAR_PATH")
   BUILD_DIR="$APP_DIR/$package"
-  echo "Using package directory at $package"
+  puts-step "Using package directory at $package"
 else
   BUILD_DIR="$APP_DIR"
-  echo "No PACKAGE_DIR config variable is set. Using the repo root."
+  puts-step "No PACKAGE_DIR config variable is set. Using the repo root."
 fi
 
-SWIFT_VERSION="6.0.3"
+SWIFT_VERSION="latest"
 SWIFT_BUILD_CONFIGURATION="release"
 SWIFT_BUILD_FLAGS=""
 
-source "/etc/lsb-release"
 source "$BIN_DIR/utils"
 
 if [ -f "$BUILD_DIR/.swift-version" ]; then
@@ -45,7 +44,7 @@ elif [ -f "$ENV_DIR/SWIFT_VERSION" ]; then
   SWIFT_VERSION=$(cat "$ENV_DIR/SWIFT_VERSION" | tr -d '[[:space:]]')
   puts-step "Using Swift $SWIFT_VERSION (from SWIFT_VERSION config)"
 else
-  puts-step "Using Swift $SWIFT_VERSION (default)"
+  puts-step "Using latest Swift version"
 fi
 
 if [ -f "$ENV_DIR/SWIFT_BUILD_CONFIGURATION" ]; then
@@ -64,7 +63,7 @@ else
 fi
 
 mkdir -p "$CACHE_DIR/$STACK"
-source "$BIN_DIR/steps/swiftenv"
+source "$BIN_DIR/steps/swiftly"
 
 cd "$BUILD_DIR"
 source "$BIN_DIR/steps/hooks/pre_compile" "$BUILD_DIR" "$CACHE_DIR" "$ENV_DIR"

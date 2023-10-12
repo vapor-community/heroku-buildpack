@@ -1,0 +1,16 @@
+puts-step Installing swiftly...
+
+export SWIFTLY_HOME_DIR="$CACHE_DIR/$STACK/share/swiftly"
+export SWIFTLY_BIN_DIR="$CACHE_DIR/$STACK/bin"
+export PATH="$SWIFTLY_BIN_DIR:$PATH"
+
+curl -L -o swiftly-install.sh https://swift-server.github.io/swiftly/swiftly-install.sh
+chmod a+x swiftly-install.sh
+./swiftly-install.sh --disable-confirmation --no-modify-profile </dev/null
+
+source "$SWIFTLY_HOME_DIR/env.sh"
+
+puts-step Installing Swift...
+
+swiftly install $SWIFT_VERSION
+swiftly use $SWIFT_VERSION
