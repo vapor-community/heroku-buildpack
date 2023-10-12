@@ -11,13 +11,10 @@ BUILD_DIR=$1
 CACHE_DIR=$2
 ENV_DIR=$3
 
-CLANG_VERSION=7.0.1
-
-SWIFT_VERSION="5.9"
+SWIFT_VERSION="latest"
 SWIFT_BUILD_CONFIGURATION="release"
 SWIFT_BUILD_FLAGS=""
 
-source "/etc/lsb-release"
 source "$BIN_DIR/utils"
 
 if [ -f "$BUILD_DIR/.swift-version" ]; then
@@ -27,7 +24,7 @@ elif [ -f "$ENV_DIR/SWIFT_VERSION" ]; then
   SWIFT_VERSION=`cat $ENV_DIR/SWIFT_VERSION | tr -d '[[:space:]]'`
   puts-step "Using Swift $SWIFT_VERSION (from SWIFT_VERSION config)"
 else
-  puts-step "Using Swift $SWIFT_VERSION (default)"
+  puts-step "Using latest Swift version"
 fi
 
 if [ -f "$ENV_DIR/SWIFT_BUILD_CONFIGURATION" ]; then
@@ -38,16 +35,9 @@ if [ -f "$ENV_DIR/SWIFT_BUILD_FLAGS" ]; then
   SWIFT_BUILD_FLAGS=`cat "$ENV_DIR/SWIFT_BUILD_FLAGS"`
 fi
 
-
 mkdir -p "$CACHE_DIR/$STACK"
 
-if [[ $SWIFT_VERSION = 5* ]]; then
-  puts-step "Using built-in clang (Swift $SWIFT_VERSION)"
-else
-  source "$BIN_DIR/steps/clang"
-fi
-
-source "$BIN_DIR/steps/swiftenv"
+source "$BIN_DIR/steps/swiftly"
 
 cd $BUILD_DIR
 source "$BIN_DIR/steps/hooks/pre_compile" "$BUILD_DIR" "$CACHE_DIR" "$ENV_DIR"
