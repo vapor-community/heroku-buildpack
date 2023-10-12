@@ -4,7 +4,6 @@ export PATH="$SWIFTLY_BIN_DIR:$PATH"
 
 if [ -d "$SWIFTLY_HOME_DIR" ]; then
   puts-step "Swiftly already installed"
-  exit 0
 else
   puts-step Installing swiftly...
 
