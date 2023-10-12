@@ -5,8 +5,8 @@ puts-step "Installing dynamic libraries"
 
 mkdir -p $BUILD_DIR/.swift-lib
 
-SWIFT_EXECUTABLE_PATH="$(readlink -f $(which swift))"
-SWIFT_EXECUTABLE_SUFFIX="usr/bin/swift"
+SWIFT_EXECUTABLE_PATH="$(readlink -f $(which swift-package))"
+SWIFT_EXECUTABLE_SUFFIX="usr/bin/swift-package"
 SWIFT_LIB_SUFFIX="usr/lib/swift/linux"
 
 SWIFT_LIB_DIR="${SWIFT_EXECUTABLE_PATH/$SWIFT_EXECUTABLE_SUFFIX/$SWIFT_LIB_SUFFIX}"
