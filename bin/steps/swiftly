@@ -6,7 +6,7 @@ export PATH="$SWIFTLY_BIN_DIR:$PATH"
 
 curl -L -o swiftly-install.sh https://swift-server.github.io/swiftly/swiftly-install.sh
 chmod a+x swiftly-install.sh
-./swiftly-install.sh --disable-confirmation --no-modify-profile </dev/null
+./swiftly-install.sh --disable-confirmation --no-modify-profile --no-install-system-deps </dev/null
 
 source "$SWIFTLY_HOME_DIR/env.sh"
 
