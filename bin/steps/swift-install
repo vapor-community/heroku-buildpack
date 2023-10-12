@@ -2,8 +2,11 @@ DYNAMIC_LIBRARY_REGEX=".*\.so\(\.[0-9]+\)*\'"
 
 puts-step "Installing dynamic libraries"
 mkdir -p $BUILD_DIR/.swift-lib
-SWIFT_PREFIX="$(swiftenv prefix)"
-find -L $SWIFT_PREFIX/usr/lib/swift/linux -regex "$DYNAMIC_LIBRARY_REGEX" -type f -exec cp -a {} $BUILD_DIR/.swift-lib \; || true 2>/dev/null
+
+SWIFT_EXECUTABLE="$(readlink -f $(which swift))"
+SWIFT_LIB_DIR='{SWIFT_EXECUTABLE_PATH/"/usr/bin/swift"/"/usr/lib/swift/linux"}'
+
+find -L $SWIFT_LIB_DIR -regex "$DYNAMIC_LIBRARY_REGEX" -type f -exec cp -a {} $BUILD_DIR/.swift-lib \; || true 2>/dev/null
 find -L .build/$SWIFT_BUILD_CONFIGURATION -regex "$DYNAMIC_LIBRARY_REGEX" -type f -exec cp -a {} $BUILD_DIR/.swift-lib \; || true 2>/dev/null
 cp -a /usr/lib/x86_64-linux-gnu/libatomic* $BUILD_DIR/.swift-lib
 
