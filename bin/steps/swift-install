@@ -5,8 +5,11 @@ puts-step "Installing dynamic libraries"
 
 mkdir -p $BUILD_DIR/.swift-lib
 
-SWIFT_EXECUTABLE="$(readlink -f $(which swift))"
-SWIFT_LIB_DIR='{SWIFT_EXECUTABLE_PATH/"/usr/bin/swift"/"/usr/lib/swift/linux"}'
+SWIFT_EXECUTABLE_PATH="$(readlink -f $(which swift))"
+SWIFT_EXECUTABLE_SUFFIX="usr/bin/swift"
+SWIFT_LIB_SUFFIX="usr/lib/swift/linux"
+
+SWIFT_LIB_DIR="${SWIFT_EXECUTABLE_PATH/$SWIFT_EXECUTABLE_SUFFIX/$SWIFT_LIB_SUFFIX}"
 
 find -L $SWIFT_LIB_DIR -regex "$DYNAMIC_LIBRARY_REGEX" -type f -exec cp -a {} $BUILD_DIR/.swift-lib \; || true 2>/dev/null
 find -L .build/$SWIFT_BUILD_CONFIGURATION -regex "$DYNAMIC_LIBRARY_REGEX" -type f -exec cp -a {} $BUILD_DIR/.swift-lib \; || true 2>/dev/null
