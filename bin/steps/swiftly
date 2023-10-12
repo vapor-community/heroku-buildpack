@@ -8,8 +8,6 @@ curl -L -o swiftly-install.sh https://swift-server.github.io/swiftly/swiftly-ins
 chmod a+x swiftly-install.sh
 ./swiftly-install.sh --disable-confirmation --no-modify-profile --no-install-system-deps </dev/null
 
-source "$SWIFTLY_HOME_DIR/env.sh"
-
 puts-step Installing Swift...
 
 swiftly install $SWIFT_VERSION
