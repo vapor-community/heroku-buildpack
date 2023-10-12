@@ -14,5 +14,5 @@ fi
 
 puts-step Installing Swift...
 swiftly install $SWIFT_VERSION
-find "$SWIFTLY_BIN_DIR" -type f ! -name 'swiftly' -delete
+find "$SWIFTLY_BIN_DIR" -type l ! -name 'swiftly' -delete
 swiftly use $SWIFT_VERSION
