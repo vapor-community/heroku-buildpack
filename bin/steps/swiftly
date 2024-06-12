@@ -7,7 +7,7 @@ if [ -d "$SWIFTLY_HOME_DIR" ]; then
 else
   puts-step Installing swiftly...
 
-  curl -L -o swiftly-install.sh https://swift-server.github.io/swiftly/swiftly-install.sh
+  curl -L -o swiftly-install.sh https://swiftlang.github.io/swiftly/swiftly-install.sh
   chmod a+x swiftly-install.sh
   ./swiftly-install.sh --disable-confirmation --no-modify-profile --no-install-system-deps </dev/null
 fi
