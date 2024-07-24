@@ -10,7 +10,7 @@ SWIFT_PREFIX="$(swiftenv prefix)"
 puts-step "Installing binaries"
 mkdir -p $BUILD_DIR/.swift-bin
 find -L .build/$SWIFT_BUILD_CONFIGURATION ! -regex "$DYNAMIC_LIBRARY_REGEX" -type f -perm /a+x -exec cp -a {} $BUILD_DIR/.swift-bin \; || true 2>/dev/null
-find -L $SWIFT_PREFIX -regex "swift-backtrace-static" -type f -exec cp -a {} $BUILD_DIR/.swift-bin \; || true 2>/dev/null
+cp -a $SWIFT_PREFIX/usr/libexec/swift/linux/swift-backtrace-static $BUILD_DIR/.swift-bin
 
 puts-step "Installing resources"
 find -L .build/$SWIFT_BUILD_CONFIGURATION/* -regex '.*\.resources$' -exec cp -a {} $BUILD_DIR/.swift-bin \; || true 2>/dev/null
