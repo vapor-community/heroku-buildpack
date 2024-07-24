@@ -1,6 +1,8 @@
 DYNAMIC_LIBRARY_REGEX=".*\.so\(\.[0-9]+\)*\'"
 SWIFT_PREFIX="$(swiftenv prefix)"
 
+set -e
+
 # puts-step "Installing dynamic libraries"
 # mkdir -p $BUILD_DIR/.swift-lib
 # find -L $SWIFT_PREFIX/usr/lib/swift/linux -regex "$DYNAMIC_LIBRARY_REGEX" -type f -exec cp -a {} $BUILD_DIR/.swift-lib \; || true 2>/dev/null
