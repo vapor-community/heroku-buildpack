@@ -65,3 +65,4 @@ mkdir -p $BUILD_DIR/.profile.d
 
 set-env PATH '$HOME/.swift-bin:$PATH'
 set-env LD_LIBRARY_PATH '$LD_LIBRARY_PATH:$HOME/.swift-lib'
+set-env SWIFT_BACKTRACE 'enable=yes,sanitize=yes,threads=all,images=all,interactive=no,output-to=stderr,symbolicate=full,swift-backtrace=.swift-bin/swift-backtrace-static'
