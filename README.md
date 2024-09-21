@@ -91,31 +91,7 @@ remote: -----> Building package (debug configuration)
 
 ### Other build arguments
 
-If you want to pass extra flags to the `swift build` command, you can do so by setting the `SWIFT_BUILD_FLAGS` config variable. The most common use of this feature is to enable _test discovery_ for older versions of Swift.
-
-#### Test discovery (Swift 5.3.3 and below)
-
-> Swift 5.4+ runs test discovery by default, making this section finally obsolete.
-
-Previously, projects with a test target needed either a LinuxMain.swift file, or a build flag that enables test discovery, to build successfully on Linux. Lacking them, the build would fail with an error message like below:
-
-    remote: error: missing LinuxMain.swift file in the Tests directory
-    remote:  !     Push rejected, failed to compile Swift app.
-    remote: 
-    remote:  !     Push failed
-
-
-The easy and low-maintenance solution was passing the `--enable-test-discovery` build flag via Heroku configuration and attempting to deploy again.
-
-The following example demonstrates this:
-
-```shell
-$ heroku config:set SWIFT_BUILD_FLAGS="--enable-test-discovery"
-$ git commit -m "Enable test discovery on Heroku" --allow-empty
-$ git push heroku master
-```
-
-> Note that the empty commit is only required if uncommitted files and the previous deployment was successful.
+If you want to pass extra flags to the `swift build` command, you can do so by setting the `SWIFT_BUILD_FLAGS` config variable.
 
 ### Hooks
 
