@@ -11,9 +11,7 @@ BUILD_DIR=$1
 CACHE_DIR=$2
 ENV_DIR=$3
 
-CLANG_VERSION=7.0.1
-
-SWIFT_VERSION="5.10.1"
+SWIFT_VERSION="6.0"
 SWIFT_BUILD_CONFIGURATION="release"
 SWIFT_BUILD_FLAGS=""
 
@@ -38,15 +36,7 @@ if [ -f "$ENV_DIR/SWIFT_BUILD_FLAGS" ]; then
   SWIFT_BUILD_FLAGS=`cat "$ENV_DIR/SWIFT_BUILD_FLAGS"`
 fi
 
-
 mkdir -p "$CACHE_DIR/$STACK"
-
-if [[ $SWIFT_VERSION = 5* ]]; then
-  puts-step "Using built-in clang (Swift $SWIFT_VERSION)"
-else
-  source "$BIN_DIR/steps/clang"
-fi
-
 source "$BIN_DIR/steps/swiftenv"
 
 cd $BUILD_DIR
@@ -65,3 +55,4 @@ mkdir -p $BUILD_DIR/.profile.d
 
 set-env PATH '$HOME/.swift-bin:$PATH'
 set-env LD_LIBRARY_PATH '$LD_LIBRARY_PATH:$HOME/.swift-lib'
+set-env SWIFT_BACKTRACE 'enable=yes,sanitize=yes,threads=all,images=all,interactive=no,output-to=stderr,symbolicate=fast,swift-backtrace=.swift-bin/swift-backtrace-static'

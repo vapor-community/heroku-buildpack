@@ -1,15 +1,14 @@
 DYNAMIC_LIBRARY_REGEX=".*\.so\(\.[0-9]+\)*\'"
+SWIFT_PREFIX="$(swiftenv prefix)"
 
 puts-step "Installing dynamic libraries"
 mkdir -p $BUILD_DIR/.swift-lib
-SWIFT_PREFIX="$(swiftenv prefix)"
-find -L $SWIFT_PREFIX/usr/lib/swift/linux -regex "$DYNAMIC_LIBRARY_REGEX" -type f -exec cp -a {} $BUILD_DIR/.swift-lib \; || true 2>/dev/null
 find -L .build/$SWIFT_BUILD_CONFIGURATION -regex "$DYNAMIC_LIBRARY_REGEX" -type f -exec cp -a {} $BUILD_DIR/.swift-lib \; || true 2>/dev/null
-cp -a /usr/lib/x86_64-linux-gnu/libatomic* $BUILD_DIR/.swift-lib
 
 puts-step "Installing binaries"
 mkdir -p $BUILD_DIR/.swift-bin
 find -L .build/$SWIFT_BUILD_CONFIGURATION ! -regex "$DYNAMIC_LIBRARY_REGEX" -type f -perm /a+x -exec cp -a {} $BUILD_DIR/.swift-bin \; || true 2>/dev/null
+cp -a $SWIFT_PREFIX/usr/libexec/swift/linux/swift-backtrace-static $BUILD_DIR/.swift-bin
 
 puts-step "Installing resources"
 find -L .build/$SWIFT_BUILD_CONFIGURATION/* -regex '.*\.resources$' -exec cp -a {} $BUILD_DIR/.swift-bin \; || true 2>/dev/null
