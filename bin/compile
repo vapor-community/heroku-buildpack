@@ -36,6 +36,13 @@ if [ -f "$ENV_DIR/SWIFT_BUILD_FLAGS" ]; then
   SWIFT_BUILD_FLAGS=`cat "$ENV_DIR/SWIFT_BUILD_FLAGS"`
 fi
 
+if [ -f "$ENV_DIR/SWIFT_DYNAMIC_STDLIB" ]; then
+  SWIFT_DYNAMIC_STDLIB=`cat "$ENV_DIR/SWIFT_DYNAMIC_STDLIB" | tr -d '[[:space:]]'`
+  SWIFT_BACKTRACE_EXECUTABLE="swift-backtrace"
+else
+  SWIFT_BACKTRACE_EXECUTABLE="swift-backtrace-static"
+fi
+
 mkdir -p "$CACHE_DIR/$STACK"
 source "$BIN_DIR/steps/swiftenv"
 
@@ -55,4 +62,4 @@ mkdir -p $BUILD_DIR/.profile.d
 
 set-env PATH '$HOME/.swift-bin:$PATH'
 set-env LD_LIBRARY_PATH '$LD_LIBRARY_PATH:$HOME/.swift-lib'
-set-env SWIFT_BACKTRACE 'enable=yes,sanitize=yes,threads=all,images=all,interactive=no,output-to=stderr,symbolicate=fast,swift-backtrace=.swift-bin/swift-backtrace-static'
+set-env SWIFT_BACKTRACE "enable=yes,sanitize=yes,threads=all,images=all,interactive=no,output-to=stderr,symbolicate=fast,swift-backtrace=.swift-bin/$SWIFT_BACKTRACE_EXECUTABLE"
