@@ -85,8 +85,35 @@ $ heroku config:set SWIFT_BUILD_CONFIGURATION=debug
 $ git commit -m "Change to debug configuration on Heroku" --allow-empty
 $ git push heroku master
 ...
-remote: -----> Building package (debug configuration)
+remote: -----> Building package (debug configuration, static stdlib)
 ...
+```
+
+### Statically linked standard library
+
+Swift supports static linkage for its standard library and Foundation, which has two advantages:
+
+1. The resulting binary is more self-contained, and can run on other machines running the same version of the same distribution _without having to install the Swift toolchain._
+1. As only the relevant parts of the standard library/Foundation are copied into the binary, the resulting image will be smaller. A smaller image deploys faster too.
+
+The buildpack uses static linkage by default.
+
+However, if your project does not build, throwing errors about missing symbols for example, you can opt-in for the previous, dynamic linkage.
+
+Define a configuration variable called `SWIFT_DYNAMIC_STDLIB` with any non-empty value, then deploy again.
+
+```shell
+$ heroku config:set SWIFT_DYNAMIC_STDLIB=true
+$ git commit -m "Change to dynamic stdlib on Heroku" --allow-empty
+$ git push heroku master
+```
+
+To use static linkage again, _unset_ the configuration variable and deploy again.
+
+```shell
+$ heroku config:unset SWIFT_DYNAMIC_STDLIB
+$ git commit -m "Change to dynamic stdlib on Heroku" --allow-empty
+$ git push heroku master
 ```
 
 ### Other build arguments

@@ -1,2 +1,7 @@
-puts-step "Building package ($SWIFT_BUILD_CONFIGURATION configuration)"
-swift build $SWIFT_BUILD_FLAGS -c "$SWIFT_BUILD_CONFIGURATION" --static-swift-stdlib
+if [ ! -z "$SWIFT_DYNAMIC_STDLIB" ]; then
+  puts-step "Building package ($SWIFT_BUILD_CONFIGURATION configuration, dynamic stdlib)"
+  swift build $SWIFT_BUILD_FLAGS -c "$SWIFT_BUILD_CONFIGURATION"
+else
+  puts-step "Building package ($SWIFT_BUILD_CONFIGURATION configuration, static stdlib)"
+  swift build $SWIFT_BUILD_FLAGS -c "$SWIFT_BUILD_CONFIGURATION" --static-swift-stdlib
+fi
