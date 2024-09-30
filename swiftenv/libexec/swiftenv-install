@@ -152,95 +152,12 @@ install_pkg_binary() {
   fi
 }
 
-# Install the given version from source
-install_source() {
-  VERSION="$1"
-
-  OPTIONS=""
-
-  if $clean; then
-    OPTIONS="--clean"
-  else
-    OPTIONS="--no-clean"
-  fi
-
-  if $verbose; then
-    OPTIONS="$OPTIONS --verbose"
-  fi
-
-  swiftenv-build $OPTIONS "$VERSION" "$SWIFTENV_ROOT/versions/$VERSION"
-}
-
-build_version() {
-  if [ -n "$URL" ]; then
-    echo 'The given URL must be to a binary version of Swift, you cannot use the `--build` option with a URL.'
-    exit 1
-  fi
-
-  if [ -r "$SWIFTENV_SOURCE_PATH/share/swiftenv-build/$VERSION" ]; then
-    vlog "Building $VERSION from source..."
-    install_source "$VERSION"
-    echo "$VERSION has been installed."
-    swiftenv-rehash
-    swiftenv-global "${VERSION##swift-}"
-    exit 0
-  fi
-
-  echo "We don't have build instructions for $VERSION."
-  exit 1
-}
-
-find_binary_url_from_api() {
-  vlog "Checking for a URL for the $VERSION on $(get_platform)."
-
-  status_code=$(curl -o /dev/null --silent --head --write-out '%{http_code}' "https://swiftenv-api.fuller.li/versions/$VERSION/binaries/$(get_platform)" || true)
-
-  if [ "$status_code" = "404" ]; then
-    vlog "Did not find a binary release for $VERSION on $(get_platform)."
-  elif [ "$status_code" = "200" ]; then
-    URL="$(curl --silent https://swiftenv-api.fuller.li/versions/$VERSION/binaries/$(get_platform) -H 'Accept: text/plain')"
-  elif [ "$status_code" = "000" ]; then
-    echo "There was a problem checking for a binary release of $VERSION, could not connect to the swiftenv API."
-    exit 1
-  else
-    echo "There was a problem checking for a binary release of $VERSION, server returned $status_code."
-    exit 1
-  fi
-}
-
 sort_versions() {
   sed 'h; s/[+-]/./g; s/.p\([[:digit:]]\)/.z\1/; s/$/.z/; G; s/\n/ /' | \
     LC_ALL=C sort -t. -k 1,1 -k 2,2n -k 3,3n -k 4,4n -k 5,5n | awk '{print $2}'
 }
 
-get_version_list() {
-  if $snapshots; then
-    curl -H 'Accept: text/plain' "https://swiftenv-api.fuller.li/versions?snapshot=true&platform=$(get_platform)"
-    exit
-  fi
-
-  if ([ "$build" == "false" ]); then
-    VERSIONS="$(ls "$SWIFTENV_SOURCE_PATH/share/swiftenv-install" | grep -v json | sort_versions | uniq)"
-
-    for version in $VERSIONS; do
-      URL=""
-      source "$SWIFTENV_SOURCE_PATH/share/swiftenv-install/$version"
-
-      if [ -n "$URL" ]; then
-        echo $version
-      fi
-    done
-  else
-    swiftenv-build --definitions
-  fi
-
-  exit
-}
-
 clean=true
-list=false
-snapshots=false
-build=auto
 verbose=false
 verify=false
 set_global=auto
@@ -263,17 +180,8 @@ for args in "$@"; do
     clean=false
   elif [ "$args" = "--clean" ]; then
     clean=true
-  elif [ "$args" = "--list" ] || [ "$args" = "-l" ];  then
-    list=true
-  elif [ "$args" = "--list-snapshots" ]; then
-    list=true
-    snapshots=true
   elif [ "$args" = "--complete" ]; then
     completes=true
-  elif [ "$args" = "--build" ]; then
-    build=true
-  elif [ "$args" = "--no-build" ]; then
-    build=false
   elif [ "$args" = "--skip-existing" ] || [ "$args" = "-s" ]; then
     SKIP_EXISTING=true
   elif [ "$args" = "--verbose" ]; then
@@ -310,8 +218,6 @@ vlog() {
 }
 
 if $completes; then
-  echo "--list"
-  echo "--list-snapshots"
   echo "--verbose"
   echo "--no-verbose"
   echo "--verify"
@@ -324,12 +230,7 @@ if $completes; then
   echo "--no-set-local"
   echo "--user"
   echo "--no-user"
-  get_version_list
   exit
-fi
-
-if $list; then
-  get_version_list
 fi
 
 mkdir -p "$SWIFTENV_ROOT/versions"
@@ -369,35 +270,30 @@ if ! $user; then
 fi
 
 # Install Binary
-if ([ "$build" == "auto" ] || [ "$build" == "false" ]); then
-  if [ -z "$URL" ]; then
-    # Check for locally cached URL
-    PROFILE="$SWIFTENV_SOURCE_PATH/share/swiftenv-install/$VERSION"
-    if [ -r "$PROFILE" ]; then
-      source "$PROFILE"
-    fi
-  fi
-
-  if [ -z "$URL" ]; then
-    find_binary_url_from_api
-  fi
-
-  if [ "$URL" ]; then
-    vlog "Installing $VERSION from $URL on $(get_platform)."
-    install_binary "$VERSION" "$URL"
-  elif [ "$build" == "false" ]; then
-    echo "Could not find a binary release of $VERSION."
-    exit 1
-  elif [ "$build" == "auto" ]; then
-    build="true"
+if [ -z "$URL" ]; then
+  # Check for locally cached URL
+  PROFILE="$SWIFTENV_SOURCE_PATH/share/swiftenv-install/$VERSION"
+  if [ -r "$PROFILE" ]; then
+    source "$PROFILE"
   fi
 fi
 
-
-# Install Source
-if [ "$build" == "true" ]; then
-  build_version
+if [ "$URL" ]; then
+  vlog "Installing $VERSION from $URL on $(get_platform)."
+  install_binary "$VERSION" "$URL"
+else
+  echo "Swift $VERSION is not supported."
+  echo "The buildpack only supports Swift 5.9.1 and later."
+  echo
+  echo "If you need an older version of Swift, you can revert to an older version of the buildpack."
+  echo "Use the full URL of its Git repo and a tag."
+  echo
+  echo "Example:"
+  echo "  heroku buildpacks:set https://github.com/vapor-community/heroku-buildpack.git#5101-release"
+  echo
+  exit 1
 fi
+
 
 echo "$VERSION has been installed."
 swiftenv-rehash
