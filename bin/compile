@@ -73,8 +73,8 @@ fi
 
 # Setup application environment
 set-env() {
-	PROFILE_PATH="$APP_DIR/.profile.d/swift.sh"
-	echo "export $1=$2" >>$PROFILE_PATH
+  PROFILE_PATH="$APP_DIR/.profile.d/swift.sh"
+  echo "export $1=$2" >>$PROFILE_PATH
 }
 
 mkdir -p $APP_DIR/.profile.d
