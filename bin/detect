@@ -1,8 +1,13 @@
 #!/usr/bin/env bash
 # bin/detect <build-dir>
 
-if [[ -f $1/Package.swift ]]; then
-  echo "Swift" && exit 0
+BUILD_DIR=$1
+
+MANIFEST='Package.swift'
+RESULTS=$(find "$BUILD_DIR" -name $MANIFEST)
+
+if [[ "$RESULTS" == *"$MANIFEST"* ]]; then
+	echo "Swift" && exit 0
 else
-  echo "no" && exit 1
+	echo "no" && exit 1
 fi

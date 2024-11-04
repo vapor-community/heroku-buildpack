@@ -1,8 +1,3 @@
 puts-step() {
   echo "-----> $@"
 }
-
-set-env() {
-  PROFILE_PATH="$BUILD_DIR/.profile.d/swift.sh"
-  echo "export $1=$2" >> $PROFILE_PATH
-}
