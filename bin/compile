@@ -14,12 +14,12 @@ ENV_DIR=$3
 VAR_PATH="$ENV_DIR/PACKAGE_DIR"
 
 if [[ -f "$VAR_PATH" ]]; then
-	package=$(cat "$VAR_PATH")
-	BUILD_DIR="$APP_DIR/$package"
-	echo "Using package directory at $package"
+  package=$(cat "$VAR_PATH")
+  BUILD_DIR="$APP_DIR/$package"
+  echo "Using package directory at $package"
 else
-	BUILD_DIR="$APP_DIR"
-	echo "No PACKAGE_DIR config variable is set. Using the repo root."
+  BUILD_DIR="$APP_DIR"
+  echo "No PACKAGE_DIR config variable is set. Using the repo root."
 fi
 
 SWIFT_VERSION="6.0.2"
