@@ -7,7 +7,7 @@ MANIFEST='Package.swift'
 RESULTS=$(find "$BUILD_DIR" -name $MANIFEST)
 
 if [[ "$RESULTS" == *"$MANIFEST"* ]]; then
-	echo "Swift" && exit 0
+  echo "Swift" && exit 0
 else
 	echo "no" && exit 1
 fi
