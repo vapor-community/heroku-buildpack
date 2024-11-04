@@ -31,11 +31,11 @@ source "/etc/lsb-release"
 source "$BIN_DIR/utils"
 
 if [ -f "$BUILD_DIR/.swift-version" ]; then
-	SWIFT_VERSION=$(cat $BUILD_DIR/.swift-version | tr -d '[[:space:]]')
-	puts-step "Using Swift $SWIFT_VERSION (from package .swift-version file)"
+  SWIFT_VERSION=$(cat $BUILD_DIR/.swift-version | tr -d '[[:space:]]')
+  puts-step "Using Swift $SWIFT_VERSION (from package .swift-version file)"
 elif [ -f "$APP_DIR/.swift-version" ]; then
-	SWIFT_VERSION=$(cat $APP_DIR/.swift-version | tr -d '[[:space:]]')
-	puts-step "Using Swift $SWIFT_VERSION (from top-level .swift-version file)"
+  SWIFT_VERSION=$(cat $APP_DIR/.swift-version | tr -d '[[:space:]]')
+  puts-step "Using Swift $SWIFT_VERSION (from top-level .swift-version file)"
 elif [ -f "$ENV_DIR/SWIFT_VERSION" ]; then
   SWIFT_VERSION=`cat $ENV_DIR/SWIFT_VERSION | tr -d '[[:space:]]'`
   puts-step "Using Swift $SWIFT_VERSION (from SWIFT_VERSION config)"
