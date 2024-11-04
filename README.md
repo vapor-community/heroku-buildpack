@@ -26,8 +26,9 @@ You can also add it to upcoming builds of an existing application:
 $ heroku buildpacks:set vapor/vapor
 ```
 
-The buildpack will detect your app as Swift if it has a `Package.swift` file in
-the root.
+The buildpack will detect your app as Swift if it has a `Package.swift` file in the
+repository. You can customize the path for the Swift package to deploy by setting the
+`PACKAGE_DIR` config setting.
 
 ### Procfile
 
@@ -51,7 +52,8 @@ web: Run --env=production --port=$PORT
 
 The buildpack defaults to Swift 6.0.2, but is compatible with Swift 5.9.1 - 6.0.1.
 
-If you need to use a specific older version of the Swift toolchain from this range, you can pin the version number using a file called `.swift-version` in the root of the project folder, or by setting a `SWIFT_VERSION` configuration variable on Heroku, then deploying again. 
+If you need to use a specific older version of the Swift toolchain from this range, you can pin the version number using a file called `.swift-version` in the root of the project folder (or at the configured `PACKAGE_DIR` setting), or by
+setting a `SWIFT_VERSION` configuration variable on Heroku, then deploying again.
 
 ```shell
 $ echo '5.10.1' > .swift-version
@@ -147,12 +149,12 @@ Save the script as `bin/pre_compile` in the root of your project.
     GIT_PRIVATE_DOMAIN=`cat $ENV_DIR/GIT_PRIVATE_DOMAIN | tr -d '[[:space:]]'`
     GIT_PRIVATE_USER=`cat $ENV_DIR/GIT_PRIVATE_USER | tr -d '[[:space:]]'`
     GIT_PRIVATE_PASSWORD=`cat $ENV_DIR/GIT_PRIVATE_PASSWORD | tr -d '[[:space:]]'`
-    
+
     # Create .netrc file with credentials
     echo "machine $GIT_PRIVATE_DOMAIN" >> "$HOME/.netrc"
     echo "login $GIT_PRIVATE_USER" >> "$HOME/.netrc"
     echo "password $GIT_PRIVATE_PASSWORD" >> "$HOME/.netrc"
-    
+
     # Create cleanup script so the dyno does not see these values at runtime
     mkdir -p "$BUILD_DIR/.profile.d"
     echo "unset GIT_PRIVATE_DOMAIN" >> "$BUILD_DIR/.profile.d/netrc.sh"
