@@ -1,15 +1,21 @@
 #!/usr/bin/env bash
 # bin/compile <build-dir> <cache-dir>
 
+# Ignore the unused variable ShellCheck warning, since we are sourcing files which will use them.
+# shellcheck disable=SC2034
+
 set -e
 set -o pipefail
 
-BIN_DIR=$(cd $(dirname $0); pwd)
-ROOT_DIR=$(dirname $BIN_DIR)
+BIN_DIR=$(
+  cd $(dirname $0)
+  pwd
+)
+ROOT_DIR=$(dirname "$BIN_DIR")
 
-APP_DIR=$1
-CACHE_DIR=$2
-ENV_DIR=$3
+APP_DIR="$1"
+CACHE_DIR="$2"
+ENV_DIR="$3"
 
 VAR_PATH="$ENV_DIR/PACKAGE_DIR"
 
@@ -30,28 +36,28 @@ source "/etc/lsb-release"
 source "$BIN_DIR/utils"
 
 if [ -f "$BUILD_DIR/.swift-version" ]; then
-  SWIFT_VERSION=$(cat $BUILD_DIR/.swift-version | tr -d '[[:space:]]')
+  SWIFT_VERSION=$(cat "$BUILD_DIR/.swift-version" | tr -d '[[:space:]]')
   puts-step "Using Swift $SWIFT_VERSION (from package .swift-version file)"
 elif [ -f "$APP_DIR/.swift-version" ]; then
-  SWIFT_VERSION=$(cat $APP_DIR/.swift-version | tr -d '[[:space:]]')
+  SWIFT_VERSION=$(cat "$APP_DIR/.swift-version" | tr -d '[[:space:]]')
   puts-step "Using Swift $SWIFT_VERSION (from top-level .swift-version file)"
 elif [ -f "$ENV_DIR/SWIFT_VERSION" ]; then
-  SWIFT_VERSION=`cat $ENV_DIR/SWIFT_VERSION | tr -d '[[:space:]]'`
+  SWIFT_VERSION=$(cat "$ENV_DIR/SWIFT_VERSION" | tr -d '[[:space:]]')
   puts-step "Using Swift $SWIFT_VERSION (from SWIFT_VERSION config)"
 else
   puts-step "Using Swift $SWIFT_VERSION (default)"
 fi
 
 if [ -f "$ENV_DIR/SWIFT_BUILD_CONFIGURATION" ]; then
-  SWIFT_BUILD_CONFIGURATION=`cat "$ENV_DIR/SWIFT_BUILD_CONFIGURATION"`
+  SWIFT_BUILD_CONFIGURATION=$(cat "$ENV_DIR/SWIFT_BUILD_CONFIGURATION")
 fi
 
 if [ -f "$ENV_DIR/SWIFT_BUILD_FLAGS" ]; then
-  SWIFT_BUILD_FLAGS=`cat "$ENV_DIR/SWIFT_BUILD_FLAGS"`
+  SWIFT_BUILD_FLAGS=$(cat "$ENV_DIR/SWIFT_BUILD_FLAGS")
 fi
 
 if [ -f "$ENV_DIR/SWIFT_DYNAMIC_STDLIB" ]; then
-  SWIFT_DYNAMIC_STDLIB=`cat "$ENV_DIR/SWIFT_DYNAMIC_STDLIB" | tr -d '[[:space:]]'`
+  SWIFT_DYNAMIC_STDLIB=$(cat "$ENV_DIR/SWIFT_DYNAMIC_STDLIB" | tr -d '[[:space:]]')
   SWIFT_BACKTRACE_EXECUTABLE="swift-backtrace"
 else
   SWIFT_BACKTRACE_EXECUTABLE="swift-backtrace-static"
@@ -60,7 +66,7 @@ fi
 mkdir -p "$CACHE_DIR/$STACK"
 source "$BIN_DIR/steps/swiftenv"
 
-cd $BUILD_DIR
+cd "$BUILD_DIR"
 source "$BIN_DIR/steps/hooks/pre_compile" "$BUILD_DIR" "$CACHE_DIR" "$ENV_DIR"
 source "$BIN_DIR/steps/ssh"
 source "$BIN_DIR/steps/swift-build"
@@ -77,7 +83,7 @@ set-env() {
   echo "export $1=$2" >>$PROFILE_PATH
 }
 
-mkdir -p $APP_DIR/.profile.d
+mkdir -p "$APP_DIR/.profile.d"
 
 set-env PATH '$HOME/$APP_DIR/.swift-bin:$PATH'
 set-env LD_LIBRARY_PATH "$LD_LIBRARY_PATH:$HOME/.swift-lib:$APP_DIR/.swift-lib"
