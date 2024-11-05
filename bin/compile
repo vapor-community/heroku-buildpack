@@ -7,9 +7,20 @@ set -o pipefail
 BIN_DIR=$(cd $(dirname $0); pwd)
 ROOT_DIR=$(dirname $BIN_DIR)
 
-BUILD_DIR=$1
+APP_DIR=$1
 CACHE_DIR=$2
 ENV_DIR=$3
+
+VAR_PATH="$ENV_DIR/PACKAGE_DIR"
+
+if [[ -f "$VAR_PATH" ]]; then
+  package=$(cat "$VAR_PATH")
+  BUILD_DIR="$APP_DIR/$package"
+  echo "Using package directory at $package"
+else
+  BUILD_DIR="$APP_DIR"
+  echo "No PACKAGE_DIR config variable is set. Using the repo root."
+fi
 
 SWIFT_VERSION="6.0.2"
 SWIFT_BUILD_CONFIGURATION="release"
@@ -19,8 +30,11 @@ source "/etc/lsb-release"
 source "$BIN_DIR/utils"
 
 if [ -f "$BUILD_DIR/.swift-version" ]; then
-  SWIFT_VERSION=`cat $BUILD_DIR/.swift-version | tr -d '[[:space:]]'`
-  puts-step "Using Swift $SWIFT_VERSION (from .swift-version file)"
+  SWIFT_VERSION=$(cat $BUILD_DIR/.swift-version | tr -d '[[:space:]]')
+  puts-step "Using Swift $SWIFT_VERSION (from package .swift-version file)"
+elif [ -f "$APP_DIR/.swift-version" ]; then
+  SWIFT_VERSION=$(cat $APP_DIR/.swift-version | tr -d '[[:space:]]')
+  puts-step "Using Swift $SWIFT_VERSION (from top-level .swift-version file)"
 elif [ -f "$ENV_DIR/SWIFT_VERSION" ]; then
   SWIFT_VERSION=`cat $ENV_DIR/SWIFT_VERSION | tr -d '[[:space:]]'`
   puts-step "Using Swift $SWIFT_VERSION (from SWIFT_VERSION config)"
@@ -58,8 +72,13 @@ if [[ -z "$RUN_TESTS" ]]; then
 fi
 
 # Setup application environment
-mkdir -p $BUILD_DIR/.profile.d
+set-env() {
+  PROFILE_PATH="$APP_DIR/.profile.d/swift.sh"
+  echo "export $1=$2" >>$PROFILE_PATH
+}
 
-set-env PATH '$HOME/.swift-bin:$PATH'
-set-env LD_LIBRARY_PATH '$LD_LIBRARY_PATH:$HOME/.swift-lib'
+mkdir -p $APP_DIR/.profile.d
+
+set-env PATH '$HOME/$APP_DIR/.swift-bin:$PATH'
+set-env LD_LIBRARY_PATH "$LD_LIBRARY_PATH:$HOME/.swift-lib:$APP_DIR/.swift-lib"
 set-env SWIFT_BACKTRACE "enable=yes,sanitize=yes,threads=all,images=all,interactive=no,output-to=stderr,symbolicate=fast,swift-backtrace=.swift-bin/$SWIFT_BACKTRACE_EXECUTABLE"
