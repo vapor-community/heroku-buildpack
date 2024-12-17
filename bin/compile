@@ -28,7 +28,7 @@ else
   echo "No PACKAGE_DIR config variable is set. Using the repo root."
 fi
 
-SWIFT_VERSION="6.0.2"
+SWIFT_VERSION="6.0.3"
 SWIFT_BUILD_CONFIGURATION="release"
 SWIFT_BUILD_FLAGS=""
 
