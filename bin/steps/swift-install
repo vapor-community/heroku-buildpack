@@ -1,5 +1,4 @@
 DYNAMIC_LIBRARY_REGEX=".*\.so\(\.[0-9]+\)*\'"
-SWIFT_PREFIX="$(swiftenv prefix)"
 
 puts-step "Installing dynamic libraries"
 
@@ -8,8 +7,10 @@ mkdir -p $BUILD_DIR/.swift-lib
 SWIFT_EXECUTABLE_PATH="$(readlink -f $(which swift-package))"
 SWIFT_EXECUTABLE_SUFFIX="usr/bin/swift-package"
 SWIFT_LIB_SUFFIX="usr/lib/swift/linux"
+SWIFT_LIBEXEC_SUFFIX="usr/libexec/swift/linux"
 
 SWIFT_LIB_DIR="${SWIFT_EXECUTABLE_PATH/$SWIFT_EXECUTABLE_SUFFIX/$SWIFT_LIB_SUFFIX}"
+SWIFT_LIBEXEC_DIR="${SWIFT_EXECUTABLE_PATH/$SWIFT_EXECUTABLE_SUFFIX/$SWIFT_LIBEXEC_SUFFIX}"
 
 find -L $SWIFT_LIB_DIR -regex "$DYNAMIC_LIBRARY_REGEX" -type f -exec cp -a {} $BUILD_DIR/.swift-lib \; || true 2>/dev/null
 find -L .build/$SWIFT_BUILD_CONFIGURATION -regex "$DYNAMIC_LIBRARY_REGEX" -type f -exec cp -a {} $BUILD_DIR/.swift-lib \; || true 2>/dev/null
@@ -21,7 +22,7 @@ fi
 puts-step "Installing binaries"
 mkdir -p $APP_DIR/.swift-bin
 find -L .build/$SWIFT_BUILD_CONFIGURATION ! -regex "$DYNAMIC_LIBRARY_REGEX" -type f -perm /a+x -exec cp -a {} $APP_DIR/.swift-bin \; || true 2>/dev/null
-cp -a $SWIFT_PREFIX/usr/libexec/swift/linux/$SWIFT_BACKTRACE_EXECUTABLE $APP_DIR/.swift-bin
+cp -a $SWIFT_LIBEXEC_DIR/$SWIFT_BACKTRACE_EXECUTABLE $APP_DIR/.swift-bin
 
 puts-step "Installing resources"
 find -L .build/$SWIFT_BUILD_CONFIGURATION/* -regex '.*\.resources$' -exec cp -a {} $APP_DIR/.swift-bin \; || true 2>/dev/null
