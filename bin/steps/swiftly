@@ -3,15 +3,17 @@ export SWIFTLY_BIN_DIR="$CACHE_DIR/$STACK/bin"
 export PATH="$SWIFTLY_BIN_DIR:$PATH"
 
 if [ -d "$SWIFTLY_HOME_DIR" ]; then
-  puts-step "Swiftly already installed"
+  puts-step "Swiftly already installed, updating..."
+  swiftly self-update
 else
   puts-step Installing swiftly...
 
-  curl -L -o swiftly-install.sh https://swiftlang.github.io/swiftly/swiftly-install.sh
-  chmod a+x swiftly-install.sh
-  ./swiftly-install.sh --disable-confirmation --no-modify-profile --no-install-system-deps </dev/null
+  curl -O https://download.swift.org/swiftly/linux/swiftly-$(uname -m).tar.gz && \
+    tar zxf swiftly-$(uname -m).tar.gz && \
+    ./swiftly init --quiet-shell-followup && \
+    . ~/.local/share/swiftly/env.sh && \
+    hash -r
 fi
 
 puts-step Installing Swift...
-swiftly install $SWIFT_VERSION
-echo y | swiftly use $SWIFT_VERSION
+swiftly install --use $SWIFT_VERSION
