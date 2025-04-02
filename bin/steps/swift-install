@@ -5,6 +5,8 @@ puts-step "Installing dynamic libraries"
 mkdir -p $BUILD_DIR/.swift-lib
 
 TOOLCHAIN_PATH="$(swiftly use -p)"
+SWIFT_LIB_SUFFIX="usr/lib/swift/linux"
+SWIFT_LIBEXEC_SUFFIX="usr/libexec/swift/linux"
 
 SWIFT_LIB_DIR="$TOOLCHAIN_PATH/$SWIFT_LIB_SUFFIX"
 SWIFT_LIBEXEC_DIR="$TOOLCHAIN_PATH/$SWIFT_LIBEXEC_SUFFIX"
