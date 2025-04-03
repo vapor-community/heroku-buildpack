@@ -11,7 +11,6 @@ SWIFT_LIBEXEC_SUFFIX="usr/libexec/swift/linux"
 SWIFT_LIB_DIR="$TOOLCHAIN_PATH/$SWIFT_LIB_SUFFIX"
 SWIFT_LIBEXEC_DIR="$TOOLCHAIN_PATH/$SWIFT_LIBEXEC_SUFFIX"
 
-find -L $SWIFT_LIB_DIR -regex "$DYNAMIC_LIBRARY_REGEX" -type f -exec cp -a {} $BUILD_DIR/.swift-lib \; || true 2>/dev/null
 find -L .build/$SWIFT_BUILD_CONFIGURATION -regex "$DYNAMIC_LIBRARY_REGEX" -type f -exec cp -a {} $BUILD_DIR/.swift-lib \; || true 2>/dev/null
 
 if [ ! -z "$SWIFT_DYNAMIC_STDLIB" ]; then
