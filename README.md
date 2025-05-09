@@ -13,10 +13,16 @@ Procfile Package.swift Sources
 $ heroku create --buildpack vapor/vapor
 
 $ git push heroku main
-remote: -----> Swift app detected
-remote: -----> Using Swift 6.0.3 (default)
-remote: -----> Installing swiftenv
-remote: -----> Installing Swift 6.0.3
+-----> Building on the Heroku-24 stack
+-----> Using buildpack: vapor/vapor
+-----> Swift app detected
+-----> No PACKAGE_DIR config variable is set. Using the repo root.
+-----> Using latest Swift version
+-----> Installing swiftly...
+...
+-----> Installing Swift...
+...
+-----> Building package (release configuration, static stdlib)...
 ...
 ```
 
@@ -36,24 +42,19 @@ Using the Procfile, you can set the process to run for your web server. Any
 binaries built from your Swift source using swift package manager will
 be placed in your $PATH.
 
-Example Procfile for Vapor 3 and 4 apps:
+Example Procfile for Vapor 4 apps:
 
 ```
-web: Run serve --env production --hostname 0.0.0.0 --port $PORT
-```
-
-Example Procfile for Vapor 2 apps:
-
-```
-web: Run --env=production --port=$PORT
+web: App serve --env production --hostname 0.0.0.0 --port $PORT
 ```
 
 ### Specify a Swift version
 
-The buildpack defaults to Swift 6.0.3, but is compatible with Swift 5.9.1 - 6.0.2 as well.
+The buildpack defaults to the latest release version of Swift, but can be configured to install older versions or development snapshots.
 
-If you need to use a specific older version of the Swift toolchain from this range, you can pin the version number using a file called `.swift-version` in the root of the project folder (or at the configured `PACKAGE_DIR` setting), or by
-setting a `SWIFT_VERSION` configuration variable on Heroku, then deploying again.
+If you want to use a specific version of the Swift toolchain, you can pin its version by creating a file called `.swift-version`
+in the root of the project folder (the repository root, unless configured with the `PACKAGE_DIR` setting),
+or by setting a `SWIFT_VERSION` configuration variable on Heroku, then deploying again.
 
 ```shell
 $ echo '5.10.1' > .swift-version
@@ -68,14 +69,6 @@ Or:
 $ heroku config:set SWIFT_VERSION=5.10.1
 $ git commit -m "Pin Swift version to 5.10.1" --allow-empty
 $ git push heroku main
-```
-
-#### Legacy versions
-
-If your project requires an even older version of Swift, you can use a previous release of the buildpack via an old tag.
-
-```shell
-$ heroku buildpacks:set https://github.com/vapor-community/heroku-buildpack.git#5101-release
 ```
 
 ### Active build configuration
