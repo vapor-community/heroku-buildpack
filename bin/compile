@@ -7,7 +7,6 @@
 set -e
 set -o pipefail
 
-
 BIN_DIR=$(
   cd $(dirname $0)
   pwd
@@ -34,7 +33,6 @@ fi
 SWIFT_VERSION="latest"
 SWIFT_BUILD_CONFIGURATION="release"
 SWIFT_BUILD_FLAGS=""
-
 
 if [ -f "$BUILD_DIR/.swift-version" ]; then
   SWIFT_VERSION=$(cat "$BUILD_DIR/.swift-version" | tr -d '[[:space:]]')
@@ -64,7 +62,7 @@ else
   SWIFT_BACKTRACE_EXECUTABLE="swift-backtrace-static"
 fi
 
-mkdir -p "$CACHE_DIR/$STACK"
+mkdir -p "$CACHE_DIR"
 source "$BIN_DIR/steps/swiftly"
 
 cd "$BUILD_DIR"

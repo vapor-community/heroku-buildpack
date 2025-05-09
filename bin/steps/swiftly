@@ -2,9 +2,9 @@ puts-step Installing swiftly...
 
 curl -O https://download.swift.org/swiftly/linux/swiftly-$(uname -m).tar.gz && \
   tar zxf swiftly-$(uname -m).tar.gz && \
-  ./swiftly init --quiet-shell-followup && \
+  ./swiftly init --quiet-shell-followup --skip-install -y && \
   . ~/.local/share/swiftly/env.sh && \
   hash -r
 
 puts-step Installing Swift...
-swiftly install --use $SWIFT_VERSION
+swiftly install --use $SWIFT_VERSION --post-install-file __fake_post_install.sh --verbose
