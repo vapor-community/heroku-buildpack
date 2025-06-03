@@ -7,4 +7,4 @@ curl -O https://download.swift.org/swiftly/linux/swiftly-$(uname -m).tar.gz && \
   hash -r
 
 puts-step Installing Swift...
-swiftly install --use $SWIFT_VERSION --post-install-file __fake_post_install.sh --verbose
+swiftly install --use $SWIFT_VERSION --post-install-file __fake_post_install.sh
